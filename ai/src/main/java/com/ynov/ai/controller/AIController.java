@@ -6,9 +6,9 @@ import com.ynov.ai.dto.ReponseAIDTO2;
 import com.ynov.ai.entity.Model;
 import com.ynov.ai.repo.ModelRepo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
@@ -29,6 +29,19 @@ public class AIController {
     public String getModel() {
         return "Mon Modele est le plus meilleur ";
     }
+
+    @GetMapping(path="/plusGrandQue")
+    public List<Model> listModels(@RequestParam String nom, @RequestParam int version) {
+        return modelRepo.findAllModelOverVersionX(nom, version);
+    }
+
+    @GetMapping(path="/model/trouver/{name}")
+    public List<Model> listModels(@PathVariable String name) {
+
+        return modelRepo.findByName(name) ;
+
+    }
+
 
     @PostMapping(path = "/model")
     public Model postModel(@RequestBody ModelDTO modelDTO) {

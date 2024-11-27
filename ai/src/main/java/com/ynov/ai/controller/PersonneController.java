@@ -3,24 +3,32 @@ package com.ynov.ai.controller;
 import com.ynov.ai.dto.PersonneDTO;
 import com.ynov.ai.entity.Model;
 import com.ynov.ai.entity.Personne;
+import com.ynov.ai.enums.TypeModelEnum;
 import com.ynov.ai.repo.ModelRepo;
 import com.ynov.ai.repo.PersonneRepo;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(path = "/personne")
+@RequiredArgsConstructor
 public class PersonneController {
 
-    @Autowired
-    PersonneRepo personneRepo;
+    private final PersonneRepo personneRepo;
+    private final ModelRepo modelRepo ;
 
-    @Autowired
-    ModelRepo modelRepo ;
 
     @GetMapping(path = "/{id}")
-    public Personne getPersonne(long id) {
-        return personneRepo.findById(id).orElse(null);
+    public PersonneDTO getPersonne(@PathVariable long id) {
+
+        Personne personne = personneRepo.findById(id).orElse(null) ;
+        PersonneDTO dto = null ;
+        if(personne != null) {
+            dto = new PersonneDTO(personne.getNom(), personne.getModel() !=null ? personne.getModel().getName() : null) ;
+        }
+
+        return dto;
     }
 
     @PostMapping()

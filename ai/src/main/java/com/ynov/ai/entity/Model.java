@@ -1,5 +1,7 @@
 package com.ynov.ai.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.ynov.ai.enums.TypeModelEnum;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,5 +25,12 @@ public class Model {
     String name ;
     String version ;
     String api_key ;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "model")
+    List<Personne> personnes;
+
+    @Enumerated(EnumType.STRING)
+    TypeModelEnum typeModelEnum ;
 
 }
